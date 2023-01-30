@@ -1,0 +1,8 @@
+.major {
+    clip-path: polygon(0 0, 100% 0, 100% 100%);
+}
+
+.minor {
+    clip-path: polygon(0 0, 0 100%, 100% 100%);
+    background-color: rbga(0, 0, 0, 0.3);
+}
