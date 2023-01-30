@@ -16,37 +16,70 @@ main =
 
 -- MODEL
 
+{-
+    PRL transformations described here: https://open.library.okstate.edu/musictheory/chapter/neo-riemannian-triadic-progressions/ 
+
+    The (P)arallel transformation flips the triangle along the edge belonging to the line of perfect fifths (left to right)
+    The (R)elative transformation flips the triangle along the edge belonging to the line of major thirds (top left to bottom right)
+    The (L)eading-tone transformation flips the triangle along the edge belonging to the line of minor thirds (top right to bottom left)
+
+-}
 type Transformation
     = Parallel
     | Relative
     | Leading
 
-type alias Triad = 
-    { quality : String
-    , root : String 
-    }
+-- Position on the grid as X Y pair
+type alias Coords
+    = (Int, Int)
+
+type Quality
+    = Major
+    | Minor
+
+-- German note names because it seemed expedient and the thing is called a Tonnetz anyway
+
+type Root
+    = A
+    | Ais
+    | B
+    | C
+    | Cis
+    | D
+    | Dis
+    | E
+    | F
+    | Fis
+    | G
+    | Gis
+
 
 type Model
-    = Empty
-    | Chord Triad
+    = Chord Quality Root Coords
+    | Unset
 
 init : Model
-init = Empty
+init = Unset
 
 -- UPDATE
 
 type Msg
-    = Something
+    = Triad Quality Root Coords
+    | Reset
 
 update : Msg -> Model -> Model
-update _ _ =
-    Empty
+update msg _ =
+    case msg of
+        Triad quality root coords ->
+            Chord quality root coords
+        _ ->
+            Unset
 
 -- VIEW
 
 view : Model -> Html Msg
 view _ =
-   div [class "container"] [
+    div [class "container"] [
         div [class "chord", style "grid-column" "1", style "grid-row" "1"] [
             div [class "major"] []
             , div [class "minor"] []
