@@ -1,7 +1,8 @@
 module Main exposing (..)
 
 import Browser
-import Html exposing (Html, text)
+import Html exposing (Html, div)
+import Html.Attributes exposing (class, style)
 
 -- MAIN
 
@@ -38,11 +39,16 @@ type Msg
     = Something
 
 update : Msg -> Model -> Model
-update msg model =
+update _ _ =
     Empty
 
 -- VIEW
 
 view : Model -> Html Msg
-view model =
-    text "placeholder"
+view _ =
+   div [class "container"] [
+        div [class "chord", style "grid-column" "1", style "grid-row" "1"] [
+            div [class "major"] []
+            , div [class "minor"] []
+        ]
+   ] 
