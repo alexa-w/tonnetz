@@ -3,6 +3,7 @@ module Main exposing (..)
 import Browser
 import Html exposing (Html, div)
 import Html.Attributes exposing (class, style)
+import Array exposing (fromList, get, Array)
 
 -- MAIN
 
@@ -37,29 +38,13 @@ type Quality
     = Major
     | Minor
 
--- German note names because it seemed expedient and the thing is called a Tonnetz anyway
+type alias Root = Int
 
-type Root
-    = A
-    | Ais
-    | B
-    | C
-    | Cis
-    | D
-    | Dis
-    | E
-    | F
-    | Fis
-    | G
-    | Gis
-
-
-type Model
-    = Chord Quality Root Coords
-    | Unset
+type alias Model
+    = (Quality, Root, Coords)
 
 init : Model
-init = Unset
+init = (Major, 0, (-1, -1))
 
 -- UPDATE
 
@@ -71,17 +56,80 @@ update : Msg -> Model -> Model
 update msg _ =
     case msg of
         Triad quality root coords ->
-            Chord quality root coords
-        _ ->
-            Unset
+            (quality, root, coords)
+        Reset ->
+            (Major, 0, (-1, -1))
 
 -- VIEW
 
 view : Model -> Html Msg
-view _ =
+view (quality, root, coords) =
     div [class "container"] [
-        div [class "chord", style "grid-column" "1", style "grid-row" "1"] [
+        cell (root, (1, 1))
+    ]
+
+cell : (Root, Coords) -> Html Msg
+
+cell (root, coords)
+    = div [class "chord", style "grid-area" (coordsToGridArea coords)] [
             div [class "major"] []
             , div [class "minor"] []
         ]
-   ] 
+
+coordsToGridArea : Coords -> String
+
+coordsToGridArea (x, y)
+    = String.fromInt(x) ++ " / " ++ String.fromInt(y)
+
+generateRow : Int -> List (Html Msg)
+
+generateRow y
+    = [
+
+    ]
+
+-- HELPERS
+
+-- deutsch because it seems appropriate to the concept
+notes : Array String
+notes = fromList
+    [ "a"
+    , "ais"
+    , "b"
+    , "c"
+    , "cis"
+    , "d"
+    , "dis"
+    , "e"
+    , "f"
+    , "fis"
+    , "g"
+    , "gis"
+    ]
+
+rootToClass : Root -> String
+
+rootToClass root = Maybe.withDefault "nothing" (get root notes)
+
+qualityToClass : Quality -> String
+
+-- we going deutsch again
+qualityToClass quality =
+    case quality of
+        Major ->
+            "dur"
+        Minor ->
+            "moll"
+
+chordToClass : Model -> String
+
+chordToClass (quality, root, _) =
+    rootToClass root ++ "-" ++ qualityToClass quality
+
+coordsToClass : Coords -> Coords -> String
+
+coordsToClass selected node =
+    if selected == node then
+        "selected"
+    else
+        ""
