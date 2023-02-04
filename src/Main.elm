@@ -4,6 +4,7 @@ import Browser
 import Html exposing (Html, div)
 import Html.Attributes exposing (class, style)
 import Array exposing (fromList, get, Array)
+import List exposing (..)
 
 -- MAIN
 
@@ -64,29 +65,29 @@ update msg _ =
 
 view : Model -> Html Msg
 view (quality, root, coords) =
-    div [class "container"] [
-        cell (root, (1, 1))
-    ]
+    div [class "container"] ((row 0 1 1) ++ (row 3 1 2))
 
-cell : (Root, Coords) -> Html Msg
+cell : Root -> Coords -> Html Msg
 
-cell (root, coords)
+cell root coords
     = div [class "chord", style "grid-area" (coordsToGridArea coords)] [
-            div [class "major"] []
-            , div [class "minor"] []
+            div [class "major", class (chordToClass Major root)] []
+            , div [class "minor", class (chordToClass Minor root)] []
         ]
 
 coordsToGridArea : Coords -> String
 
 coordsToGridArea (x, y)
-    = String.fromInt(x) ++ " / " ++ String.fromInt(y)
+    = String.fromInt(y) ++ " / " ++ String.fromInt(x)
 
-generateRow : Int -> List (Html Msg)
+row : Root -> Int -> Int -> List (Html Msg)
 
-generateRow y
-    = [
-
-    ]
+row root x y =
+    if x > 7 then
+        []
+    else
+        [cell root (x, y)] ++ row (modBy 12 (root + 4)) (x + 1) y
+    
 
 -- HELPERS
 
@@ -121,9 +122,9 @@ qualityToClass quality =
         Minor ->
             "moll"
 
-chordToClass : Model -> String
+chordToClass : Quality -> Root -> String
 
-chordToClass (quality, root, _) =
+chordToClass quality root =
     rootToClass root ++ "-" ++ qualityToClass quality
 
 coordsToClass : Coords -> Coords -> String

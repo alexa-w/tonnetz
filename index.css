@@ -17,7 +17,6 @@
     width: 100%;
     height: 100%;
     clip-path: polygon(4% 2%, 98% 2%, 98% 96%);
-    background-color: red;
 }
 
 .minor {
@@ -26,5 +25,100 @@
     width: 100%;
     height: 100%;
     clip-path: polygon(2% 4%, 2% 98%, 96% 98%);
+}
+
+.a-dur {
+    background-color: rgb(117, 92, 117);
+}
+
+.a-moll {
+    background-color: darkorchid;
+}
+
+.ais-dur {
+    background-color: rgb(197, 38, 152);
+}
+
+.ais-moll {
+    background-color: rgb(103, 19, 79);
+}
+
+.b-dur {
+    background-color: rgb(131, 5, 221);
+}
+
+.b-moll {
+    background-color: rgb(90, 8, 125);
+}
+
+.c-dur {
+    background-color: red;
+}
+
+.c-moll {
     background-color: darkred;
+}
+
+.cis-dur {
+    background-color: orangered;
+}
+
+.cis-moll {
+    background-color: sienna;
+}
+
+.d-dur {
+    background-color: orange;
+}
+
+.d-moll {
+    background-color: darkorange; 
+}
+
+.dis-dur {
+    background-color: lightsalmon;
+}
+
+.dis-moll {
+    background-color: darksalmon;
+} 
+
+.e-dur {
+    background-color: yellow;
+}
+
+.e-moll {
+    background-color: gold;
+}
+
+.f-dur {
+    background-color: greenyellow;
+}
+
+.f-moll {
+    background-color: green;
+}
+
+.fis-dur {
+    background-color: aquamarine;
+}
+
+.fis-moll {
+    background-color: darkcyan;
+}
+
+.g-dur {
+    background-color: blue;
+}
+
+.g-moll {
+    background-color: rgb(5, 5, 104)
+}
+
+.gis-dur {
+    background-color: blueviolet;
+}
+
+.gis-moll {
+    background-color: rgb(79, 25, 129);
 }
