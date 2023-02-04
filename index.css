@@ -122,3 +122,7 @@
 .gis-moll {
     background-color: rgb(79, 25, 129);
 }
+
+.selected {
+    background-color: black;
+}

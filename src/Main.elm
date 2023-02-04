@@ -5,6 +5,7 @@ import Html exposing (Html, div)
 import Html.Attributes exposing (class, style)
 import Array exposing (fromList, get, Array)
 import List exposing (..)
+import Html.Events exposing (onClick)
 
 -- MAIN
 
@@ -42,10 +43,18 @@ type Quality
 type alias Root = Int
 
 type alias Model
-    = (Quality, Root, Coords)
+    = {
+        quality : Quality
+        , root : Root
+        , coords : Coords
+    }
 
 init : Model
-init = (Major, 0, (-1, -1))
+init =
+    { quality = Major
+    , root = 0
+    , coords = (-1, -1)
+    }
 
 -- UPDATE
 
@@ -57,45 +66,47 @@ update : Msg -> Model -> Model
 update msg _ =
     case msg of
         Triad quality root coords ->
-            (quality, root, coords)
+            { quality = quality
+            , root = root
+            , coords = coords}
         Reset ->
-            (Major, 0, (-1, -1))
+            init
 
 -- VIEW
 
 view : Model -> Html Msg
-view (quality, root, coords) =
-    div [class "container"] (grid 0 1)
+view model =
+    div [class "container"] (grid 0 0 model)
 
-cell : Root -> Coords -> Html Msg
+cell : Root -> Coords -> Model -> Html Msg
 
-cell root coords
+cell root coords model
     = div [class "chord", style "grid-area" (coordsToGridArea coords)] [
-            div [class "major", class (chordToClass Major root)] []
-            , div [class "minor", class (chordToClass Minor root)] []
+            div [class "major", class (chordToClass Major root), class (coordsToClass model coords Major), onClick (Triad Major root coords)] []
+            , div [class "minor", class (chordToClass Minor root), class (coordsToClass model coords Minor), onClick (Triad Minor root coords)] []
         ]
 
 coordsToGridArea : Coords -> String
 
 coordsToGridArea (x, y)
-    = String.fromInt(y) ++ " / " ++ String.fromInt(x)
+    = String.fromInt(y + 1) ++ " / " ++ String.fromInt(x + 1)
 
-row : Root -> Int -> Int -> List (Html Msg)
+row : Root -> Int -> Int -> Model -> List (Html Msg)
 
-row root x y =
+row root x y model =
     if x > 7 then
         []
     else
-        cell root (x, y) :: row (modBy 12 (root + 4)) (x + 1) y
+        cell root (x, y) model :: row (modBy 12 (root + 4)) (x + 1) y model
     
 
-grid : Root -> Int -> List (Html Msg)
+grid : Root -> Int -> Model -> List (Html Msg)
 
-grid root y =
+grid root y model =
     if y > 9 then
         []
     else
-        row root 1 y ++ grid (modBy 12 (root + 3)) (y + 1)
+        row root 0 y model ++ grid (modBy 12 (root + 3)) (y + 1) model
 
 
 -- HELPERS
@@ -136,10 +147,10 @@ chordToClass : Quality -> Root -> String
 chordToClass quality root =
     rootToClass root ++ "-" ++ qualityToClass quality
 
-coordsToClass : Coords -> Coords -> String
+coordsToClass : Model -> Coords -> Quality -> String
 
-coordsToClass selected node =
-    if selected == node then
+coordsToClass selected node quality =
+    if selected.coords == node && selected.quality == quality then
         "selected"
     else
         ""
