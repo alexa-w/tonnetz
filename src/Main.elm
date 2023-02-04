@@ -65,7 +65,7 @@ update msg _ =
 
 view : Model -> Html Msg
 view (quality, root, coords) =
-    div [class "container"] ((row 0 1 1) ++ (row 3 1 2))
+    div [class "container"] (grid 0 1)
 
 cell : Root -> Coords -> Html Msg
 
@@ -88,6 +88,15 @@ row root x y =
     else
         [cell root (x, y)] ++ row (modBy 12 (root + 4)) (x + 1) y
     
+
+grid : Root -> Int -> List (Html Msg)
+
+grid root y =
+    if y > 9 then
+        []
+    else
+        row root 1 y ++ grid (modBy 12 (root + 3)) (y + 1)
+
 
 -- HELPERS
 
