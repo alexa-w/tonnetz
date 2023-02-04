@@ -86,7 +86,7 @@ row root x y =
     if x > 7 then
         []
     else
-        [cell root (x, y)] ++ row (modBy 12 (root + 4)) (x + 1) y
+        cell root (x, y) :: row (modBy 12 (root + 4)) (x + 1) y
     
 
 grid : Root -> Int -> List (Html Msg)
