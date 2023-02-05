@@ -3,7 +3,7 @@
 This application is meant as an interactive music theory tool for play and learning. By clicking on chords in the graphical interface, the user will hear the chord and see transformations highlighted according to Neo-Riemannian progressions. For more information on Neo-Riemannian theory and the concept of a Tonnetz in musical analysis, [this essay](https://open.library.okstate.edu/musictheory/chapter/neo-riemannian-triadic-progressions/) is a good reference!
 
 ## Installation requirements
-- Elm 0.19.1
+- Elm 0.19.1 (install directions located [here](https://guide.elm-lang.org/install/elm.html))
 
 ## How to run
 - `elm make src/Main.elm --output index.js`
